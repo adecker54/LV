@@ -1,5 +1,5 @@
 /* ==========================================================
-   algo-startcap.js gemini
+   algo-startcap.js gemini ver6
 ========================================================== */
 // 1. A FŐ SZÁMÍTÁSI FÜGGVÉNY, AMIT A HTML GOMB MEGHÍV
 function szamolKezdotoke() {
