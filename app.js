@@ -208,7 +208,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // A sima hibaüzenetek megjelenítése (ezzel fog újra működni a validáció!)
 function sajatAlert(szoveg) {
-    document.getElementById("alertHeader").innerText = "Hiba / Error";
+    const langPack = szotar[aktualisNyelv];
+    document.getElementById("alertHeader").innerText = langPack.alertTitle;
     document.getElementById("alertMessage").innerText = szoveg;
     document.getElementById("customAlert").style.display = "block";
 }

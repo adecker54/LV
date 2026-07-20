@@ -49,19 +49,25 @@ const szotar = {
         tabStartCap: "Kezdőtőke Tervező",
         btnHelp: "Súgó / Info",
         helpTitle: "Útmutató az algoritmusokhoz",
-        helpText: `Az <span style="color:#d4af37; font-weight:bold;">AurumX</span> Liquidity Vault (LV) nyereségszimulációja és számításai kizárólag tájékoztató jellegűek. A pénzügyi termékek és a kriptovaluta-eszközök befektetési kockázatokkal járnak. A múltbeli teljesítmény <em>nem garantálja</em> a jövőbeli eredményeket. 
+        alertTitle: "Figyelem! Hiba",
+
+        helpText: `Az <span style="color:#d4af37; font-weight:bold;">AurumX</span> Liquidity Vault <span style="color:#2ecc71;">(LV)</span> nyereségszimulációja és számításai kizárólag tájékoztató jellegűek. A pénzügyi termékek és a kriptovaluta-eszközök befektetési kockázatokkal járnak. A múltbeli teljesítmény <em>nem garantálja</em> a jövőbeli eredményeket. 
 Az <span style="color:#d4af37; font-weight:bold;">AurumX és az AUR Labs</span> rendelkezik a hongkongi <span style="font-weight:bold;">SFC*</span> 4. és 9. típusú engedélyeivel, valamint az USA-beli <span style="font-weight:bold;">FinCEN**</span> hatóság <span style="font-weight:bold;">MSB***</span> regisztrációjával.
 
-Az LV nyereségszimuláció segítségével számszerű támpontot kaphat arról, hogy 
+Az <span style="color:#2ecc71;">LV</span> nyereségszimuláció segítségével számszerű támpontot kaphat arról, hogy 
 i) mikor érheti el a kívánt havi fix jövedelmet a megadott kezdőtőke befizetése után,
 ii) mennyi kezdőtőkére van szüksége a kívánt havi jövedelem eléréséhez?
+
+Vegye még figyelembe, hogy a szimuláció véletlenszám generátort alkalmazásával történik. Ennek következménye, hogy az algoritmus - <em><small>ugyanazokkal a bemeneti adatokkal is és a kezdőtőke kerekítése miatt</small></em> - különböző futások esetén egy-egy hónappal eltérő eredményt adhat.
+
 A számítás során alkalmazott feltevések:
-- A kamatjutalmak valódi értéke a valóságban bármikor eltérhet a feltételezettől, tehát itt is - látható módon - ingadozik.
-- Ezt az ingadozást a program itt úgy szimulálja, hogy az aktuális havi konkrét érték a program indításánál beállított értéktől ± irányban max. 20%-kal eltér.
-- A kezdőtőke, az LV-be befizetett összeg kizárólag a 100$ többszöröse lehet (100, 200, ..., 1000, ...)
-- A havi kamatjutalom 180 napos lekötés esetén 8% és 15%, míg 360 napos lekötésnél  15% és 25% között ingadozhat az <span style="color:#d4af37; font-weight:bold;">AurumX</span> üzletmenetétől függően. 
-- Az LV kamatai itt a szimulációban havonta újbóli lekötésre kerülnek, tehát ez kamatos kamat.
-- Az éles LV applikációban bármelyik nap le lehet állítani a kamat napi lekötését. Ennek az a következménye, hogy a tőke ettől kezdve jóval lassabban növekszik.
+- A számolás az <span style="color:#d4af37; font-weight:bold;">AurumX</span>-ben jelenleg érvényes kamatos kamat alkalmazásával történik, tehát a havi jutalmak itt a szimulációban havonta újbóli lekötésre kerülnek.
+- A kezdőtőke, az <span style="color:#2ecc71;">LV</span>-be befizetett összeg kizárólag a 100$ többszöröse lehet (100, 200, ..., 1000, ...)
+- A havi kamatjutalom 180 napos lekötés esetén 8% és 15%, míg 360 napos lekötésnél  15% és 25% között ingadozhat az AurumX üzletmenetétől függően. Ezek a %-ok bármikor csökkenhetnek, amennyiben a cég elérte a Liquidity Vault eltervezett értékét. pl. 150.000.000 $-t.
+- A havi kamatjutalom a valóságban véletlenszerűen alakul. Ezt a program úgy szimulálja, hogy az itteni érték a programban beállított értéktől +- irányban max. 20%-ban eltér.
+- Az éles <span style="color:#2ecc71;">LV</span> applikációban bármelyik nap le lehet állítani a kamat napi lekötését. Ennek az a következménye, hogy a tőke ettől kezdve jóval lassabban növekszik.
+- Amennyiben a hozam automatikus lekötésre van állítva, a következő történik: Minden nap végén a rendszer 45 vagy 90 napra leköti a napi hozamot. A mai lekötött hozam 45/90 napig 'kamatozik' és csak utána lehet felvenni. Ez mindaddig így megy, amíg a kezdőtőke automatikus lekötésre van állítva. Pl. a 22. napon a kamatos kamat jóváírást kikapcsolod. Ekkor már 21 csomagod van és a legelső csomag kitermelt hozamát a kezdés után 112 nap múlva tudod kikérni.
+- Ha nincs kamatos kamat, tehát mindennapos hozam lekötés, akkor a hozam bármikor kivehető. Persze akkor ez a számítás nem felesleges!!!
 
 <em>Mj: Helyezze a kurzort a grafikon görbéjére és meglátja annak koordinátáit</em>
 
@@ -129,19 +135,25 @@ A számítás során alkalmazott feltevések:
 	tabStartCap: "Initial Capital Planner",
         btnHelp: "Help / Info",
         helpTitle: "Guide to the algorithms",
-        helpText: `The <span style="color:#d4af37; font-weight:bold;">AurumX</span> Liquidity Vault (LV) profit simulations and calculations are for informational purposes only. Financial products and cryptocurrency assets involve investment risks. Past performance <em>does not guarantee</em> future results. 
-<span style="color:#d4af37; font-weight:bold;">AurumX and AUR Labs</span> hold Type 4 and Type 9 licenses from the Hong Kong <span style="font-weight:bold;" >SFC*</span>, as well as <span style="font-weight:bold;">FinCEN**</span> authority <span style="font-weight:bold;">MSB***</span> registration in the U.S.
+        alertTitle: "Attention! Error",
 
-Using the LV profit simulator, you can get experience the power of compound interest as applied by LV and get numerical estimate of 
+        helpText: `The <span style="color:#d4af37; font-weight:bold;">AurumX</span> Liquidity Vault <span style="color:#2ecc71;">(LV)</span> profit simulations and calculations are for informational purposes only. Investing in financial products and cryptocurrency assets involves investment risks. Past performance <em>does not guarantee</em> future results. 
+AurumX and AUR Labs hold Type 4 and Type 9 licenses from the Hong Kong Securities and Futures Commission, as well as a “Money Services Business” registration with the U.S. Financial Crimes Enforcement Network.
+
+Please also note that the simulation uses a random number generator. As a result, the algorithm —<em><small>even with the same input data and due to the rounding of the initial capital</small></em>— may yield results that differ by one month in different runs.
+
+Using the LV profit simulator, you can get a numerical estimate of 
 i) when you can achieve your desired fixed monthly income after depositing the specified initial capital,
-ii) how much initial capital you need to achieve your desired monthly income.
+ii) how much initial capital you need to achieve your desired monthly income?
+We emphasize once again that this is for informational and demonstration purposes only! The actual value of interest payments may differ from the assumed values at any time.
 Assumptions used in the calculation:
-- The actual value of interest payments may differ from the assumed value at any time; therefore, as shown here, it fluctuates.
-- The program simulates this fluctuation such that the specific monthly value may deviate by a maximum of ±20% from the value set when the program is launched.
-- The initial capital —the amount deposited into the LV— must be a multiple of $100 (100, 200, ..., 1000, ...)
-- The monthly interest rate for a 180-day term ranges from 8% to 15%, while for a 360-day term, it can fluctuate between 15% and 25%, depending on the business practices of <span style="color:#d4af37; font-weight:bold;">AurumX</span>. 
-- In this simulation, LV interest is reinvested monthly, so this is compound interest.
-- In the live LV application, you can stop the daily reinvestment of interest on any given day. As a result, the principal will grow much more slowly from that point on.
+- The calculation is based on the interest rate currently in effect in <span style="color:#d4af37; font-weight:bold;" >AurumX</span>, so the monthly returns in this simulation are reinvested each month.
+- The initial capital, the amount deposited into the LV, can only be a multiple of $100 (100, 200, ..., 1000, ...)
+- The monthly interest rate for a 180-day term ranges from 8% to 15%, while for a 360-day term, it can vary between 15% and 25%, depending on AurumX’s business operations. These percentages may decrease at any time if the company reaches the planned value of the Liquidity Vault. e.g., $150,000,000.
+- The monthly interest reward is, in reality, random. The program simulates this such that the value displayed here deviates by a maximum of 20% in either direction from the value set in the program.
+- In the live LV application, the daily interest lock-in can be disabled on any given day. As a result, the principal grows much more slowly from that point on.
+- If the return is set to automatic locking, the following occurs: At the end of each day, the system locks the daily return for 45 or 90 days. Today’s locked return “accrues interest” for 45/90 days and can only be withdrawn afterward. This continues as long as the initial capital is set to automatic locking. For example, on the 22nd day, you turn off compound interest. At that point, you already have 21 packages, and you can withdraw the returns generated by the very first package 112 days after you started.
+If there is no compound interest—that is, if daily returns are locked in—then the returns can be withdrawn at any time. Of course, in that case, this calculation isn’t necessary!!!
 
 <em>Note: Hover your cursor over the curve on the graph to see its coordinates</em>
 

@@ -9,8 +9,15 @@ function szamolKezdotoke() {
     const honapVal = document.getElementById('startcap-honap') ? parseInt(document.getElementById('startcap-honap').value) : 24;
     const kiveszVal = document.getElementById('startcap-kivesz') ? document.getElementById('startcap-kivesz').value : 'NEM';
 
-    // Egyszerűsített matematikai becslés a szükséges kezdőtőkére
-    const szuksegesToke = kivetVal / (kamatVal / 100);
+    // matematikai számítás a szükséges kezdőtőkére
+    let r = kamatVal / 100;
+    let szuksegesToke;
+    if (kiveszVal === "NEM") {
+        szuksegesToke = kivetVal / (r * Math.pow((1 + r), (honapVal - 1)));
+    } else {
+        szuksegesToke = 2 * kivetVal / (r * Math.pow((1 + r), (honapVal - 1)));
+    }
+
     const kerekKezdoToke = Math.ceil(szuksegesToke / 100) * 100;
 
     // Megjelenítjük a szöveges eredményjelző zónát
@@ -32,6 +39,20 @@ function szamolKezdotoke() {
         if (document.getElementById('resKerekitettLabel')) document.getElementById('resKerekitettLabel').innerText = sz.lblKerekitett || "Kerekített kezdőtőke:";
     }
 
+    // ... a diagram frissítése és az eredmények kiírása után ...
+    // Megjelenítjük az eredményjelző zónát és a táblázatnyitó gombot
+    document.getElementById('startcap-eredmeny').style.display = 'block';
+    const toggleBtn = document.getElementById('toggleBtn');
+    toggleBtn.style.display = 'block';
+
+    // A táblázatot alaphelyzetben ELREJTJÜK az új számítás után
+    document.getElementById('tableContainer').style.display = 'none';
+
+    // KÖTELEZŐEN frissítjük a gomb feliratát, hogy a "Megjelenítés" szöveg látszódjon!
+    toggleBtn.innerText = szotar[aktualisNyelv].btnTablamutat;
+
+
+
     // Átadjuk a stafétát a szimulációnak és a grafikonnak
     futtatValodiSzimulacio(kerekKezdoToke, kamatVal, honapVal, kiveszVal, kivetVal);
 }
@@ -51,8 +72,7 @@ function futtatValodiSzimulacio(inditoToke, alapKamat, vegHonap, kiveszTokeAkar,
     
     // --- 0. HÓNAP SZÁMÍTÁSA ÉS GENERÁLÁSA ---
     let nyitoToke0 = toke;
-    // A 0. hónapra is generálunk egy alap véletlenszerű kamatot, mint a ciklusban
-    let randomSzorzo0 = 0.8 + Math.random() * 0.4;
+    let randomSzorzo0 = 1 + (Math.random() * 0.4 - 0.2);
     let aktualisHaviKamatLab0 = (alapKamat / 100) * randomSzorzo0;
     let haviKamatErtek0 = nyitoToke0 * aktualisHaviKamatLab0;
     
@@ -75,11 +95,10 @@ function futtatValodiSzimulacio(inditoToke, alapKamat, vegHonap, kiveszTokeAkar,
         <td style="padding:8px; color:#d4af37;">${zaroToke0.toFixed(2)}</td>
     </tr>`;
 
-    // --- SZIMULÁCIÓS CIKLUS AZ 1. HÓNAPTÓL ---
-    for (let i = 1; i <= vegHonap; i++) {
-        let nyitoToke = toke; // Ez megegyezik az előző hónap (akár a 0.) záró tőkéjével
-        
-        let randomSzorzo = 0.8 + Math.random() * 0.4; 
+    // --- SZIMULÁCIÓS CIKLUS AZ 1. HÓNAPTÓL (eggyel hamarabb fejezzük be) ---
+    for (let i = 1; i < vegHonap; i++) {   // <= helyett <  --> eggyel kevesebb hónap
+        let nyitoToke = toke; 
+        let randomSzorzo = 1 + (Math.random() * 0.4 - 0.2);
         let aktualisHaviKamatLáb = (alapKamat / 100) * randomSzorzo;
         let haviKamatErtek = nyitoToke * aktualisHaviKamatLáb;
         
@@ -96,7 +115,7 @@ function futtatValodiSzimulacio(inditoToke, alapKamat, vegHonap, kiveszTokeAkar,
                 lbl1 = szotar[aktualisNyelv].lblListabeszur1 || lbl1;
                 lbl2 = szotar[aktualisNyelv].lblListabeszur2 || lbl2;
             }
-            megjegyzesSzoveg = ` <br><span style="color:#ff4d4d; font-weight:bold;">${lbl1} (${inditoToke} $) ${lbl2}</span>`;
+            megjegyzesSzoveg = ` <span style="color:#ff4d4d; font-weight:bold;">${lbl1} (${inditoToke} $) ${lbl2}</span>`;
         }
 
         let zaroToke = toke;

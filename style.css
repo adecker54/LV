@@ -182,13 +182,16 @@
 	    height: 100%; 
 	    background: rgba(0, 0, 0, 0.75); 
 	    z-index: 9999; /* Nagyon magas érték, hogy minden felett legyen */
+	    overflow-y: auto;
 	}	
 
 	/* A Help ablak belső, széles, elegáns doboza */
 	#helpModal .modal-content {
 	    width: 90%;
 	    max-width: 1050px; /* Itt korlátozzuk le a maximális szélességet! */
-	    margin: 5% auto; /* Fentről 5% helyet hagy, és középre igazítja */
+	    overflow-y: auto;      /* görgethetővé teszi függőlegesen -----------------------------------------*/
+            max-height: 80vh;      /* maximum a képernyő 80%-a magas legyen */
+            margin: 5% auto; /* Fentről 5% helyet hagy, és középre igazítja */
 	    background: #1a1a1a;
 	    padding: 30px;
 	    border-radius: 8px;
@@ -206,11 +209,12 @@
 	    color: #000;
 	    font-weight: bold;
 	    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.2s ease;
-}
-.help-close-btn:hover {
-    background-color: #f1c40f;
-}
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s ease;
+        }
+
+	.help-close-btn:hover {
+	    background-color: #f1c40f;
+	}

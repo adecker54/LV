@@ -1,4 +1,4 @@
-	/* ==========================================================
+/* ==========================================================
    algo-month.js gemini
 ========================================================== */
 
@@ -33,8 +33,7 @@ function szamolas_month() {
     let nyitoToke0 = toke;
     
     // Ugyanaz a kamatszámítás és ingadozásfaktor, mint a ciklusban
-//    const ingadozasfaktor0 = 1 + (Math.random() * 0.4 - 0.2); -------------------------------------------------------------
-    const ingadozasfaktor0 = 1
+    const ingadozasfaktor0 = 1 + (Math.random() * 0.4 - 0.2);
     const aktualisHaviKamatSzazalek0 = haviKamatSzazalek * ingadozasfaktor0;
     const aktualisHaviKamatLab0 = aktualisHaviKamatSzazalek0 / 100;
     
@@ -71,8 +70,7 @@ function szamolas_month() {
         honap++;
         let nyitoToke = toke; // Az előző hónap zárója lesz a nyitó
 
-   //   const ingadozasfaktor = 1 + (Math.random() * 0.4 - 0.2);--------------------------------------------- 
-        const ingadozasfaktor = 1;
+        const ingadozasfaktor = 1 + (Math.random() * 0.4 - 0.2);
         const aktualisHaviKamatSzazalek = haviKamatSzazalek * ingadozasfaktor;
         const aktualisHaviKamatLab = aktualisHaviKamatSzazalek / 100;
 
